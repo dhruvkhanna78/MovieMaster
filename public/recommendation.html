@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Recommendation</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Movie Recommendation System</h1>
+        <form id="recommendForm">
+            <label for="mood">Select Mood:</label>
+            <select id="mood" name="mood" required>
+                <option value="">--Select--</option>
+                <option value="dark">Dark</option>
+                <option value="happy">Happy</option>
+                <option value="romantic">Romantic</option>
+            </select>
+
+            <label for="genre">Select Genre:</label>
+            <select id="genre" name="genre" required>
+                <option value="">--Select--</option>
+                <option value="drama">Drama</option>
+                <option value="comedy">Comedy</option>
+                <option value="thriller">Thriller</option>
+            </select>
+
+            <button type="submit">Get Recommendation</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("recommendForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const mood = document.getElementById("mood").value;
+            const genre = document.getElementById("genre").value;
+
+            try {
+                const res = await fetch(`http://localhost:8000/recommend?mood=${mood}&genre=${genre}`);
+                const data = await res.json();
+
+                const resultDiv = document.getElementById("result");
+
+                if (data.movie) {
+                    resultDiv.innerHTML = `
+            <h2>${data.movie.title}</h2>
+            <p><strong>Overview:</strong> ${data.movie.overview || 'N/A'}</p>
+            <img src="https://image.tmdb.org/t/p/w300${data.movie.poster_path}" alt="${data.movie.title}" />
+          `;
+                } else {
+                    resultDiv.innerHTML = "<p>No matching movie found.</p>";
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById("result").innerHTML = "<p>Error fetching data.</p>";
+            }
+        });
+    </script>
+</body>
+
+</html>
