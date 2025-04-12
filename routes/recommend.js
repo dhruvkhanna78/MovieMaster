@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-const TMDB_API_KEY = '323bb9bef421ff7b2cbcab5b76dcb2d7';
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 const genreMap = {
     action: '28',
