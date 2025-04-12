@@ -42,7 +42,9 @@ const genreMap = {
     if (!genreId) return;
   
     try {
-      const response = await fetch(`http://localhost:8000/recommend?genre=${selectedGenre}`);
+      const BASE_URL = "https://moviemaster-o94s.onrender.com"; // change to localhost:8000 for dev
+
+      const response = await fetch(`${BASE_URL}/recommend?genre=${selectedGenre}`);
       const data = await response.json();
   
       if (data.movies && data.movies.length > 0) {
